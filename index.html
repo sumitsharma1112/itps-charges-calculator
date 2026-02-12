@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="India Post ITPS Tariff Calculator — Calculate international tracked packet postage with GST for 135 countries.">
+  <title>ITPS Tariff Calculator — India Post</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <!-- PDF Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="envelope-wrapper">
+    <div class="top-strip"></div>
+    <div class="card">
+
+      <!-- Header -->
+      <div class="header">
+        <div class="header-left">
+          <div class="header-badge">India Post · International</div>
+          <h1>ITPS <span>Tariff</span><br>Calculator</h1>
+          <p class="header-sub">International Tracked Packet Service</p>
+        </div>
+        <div class="stamp-area">
+          <div class="stamp-icon">✉</div>
+          <span class="stamp-text">India Post</span>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div class="form-grid">
+        <div class="field full">
+          <label for="country">Destination Country</label>
+          <div class="select-wrapper">
+            <select id="country" onchange="onCountryChange()">
+              <option value="">— Select a country —</option>
+            </select>
+          </div>
+          <div class="weight-info" id="weightInfo">
+            <span class="weight-info-icon">📦</span>
+            <span class="weight-info-text">Max permissible weight: <strong id="maxWeightDisplay">—</strong></span>
+          </div>
+        </div>
+
+        <div class="field full">
+          <label for="weight">Packet Weight (grams)</label>
+          <input type="number" id="weight" min="1" max="5000" step="1"
+                 placeholder="Enter weight in grams" oninput="onWeightInput()">
+          <div class="weight-warning" id="weightWarning">
+            <span>⚠</span>
+            <span class="weight-warning-text" id="weightWarningText">Weight exceeds maximum limit</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="btn-row">
+        <button class="btn-calculate" onclick="calculate()">Calculate Postage</button>
+        <button class="btn-pdf" id="btnPdf" onclick="exportPDF()">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6zm2-5h8v1.5H8V15zm0 3h5v1.5H8V18zm0-6h2v1.5H8V12z"/>
+          </svg>
+          Save PDF
+        </button>
+      </div>
+
+      <!-- Results -->
+      <div class="results" id="results">
+        <div class="results-header">
+          <span class="results-title">Postage Breakdown</span>
+          <span class="results-tag">✓ Calculated</span>
+        </div>
+
+        <div class="receipt">
+          <div class="receipt-row">
+            <div>
+              <div class="receipt-label">Base Tariff (First 50g)</div>
+              <div class="receipt-sublabel" id="baseTariffNote"></div>
+            </div>
+            <div class="receipt-value" id="baseTariffVal">—</div>
+          </div>
+          <div class="receipt-row" id="additionalRow">
+            <div>
+              <div class="receipt-label">Additional Weight Charge</div>
+              <div class="receipt-sublabel" id="additionalNote"></div>
+            </div>
+            <div class="receipt-value" id="additionalVal">—</div>
+          </div>
+          <div class="receipt-row">
+            <div>
+              <div class="receipt-label">Subtotal (before GST)</div>
+            </div>
+            <div class="receipt-value" id="subtotalVal">—</div>
+          </div>
+          <div class="receipt-row gst">
+            <div>
+              <div class="receipt-label">GST @ 18%</div>
+            </div>
+            <div class="receipt-value" id="gstVal">—</div>
+          </div>
+          <div class="receipt-row total">
+            <div class="receipt-label">Total Payable</div>
+            <div class="receipt-value" id="totalVal">—</div>
+          </div>
+        </div>
+
+        <div class="breakdown" id="breakdown">
+          <div class="breakdown-title">Calculation Detail</div>
+          <div class="breakdown-line" id="bLine1"></div>
+          <div class="breakdown-line" id="bLine2"></div>
+          <div class="breakdown-line" id="bLine3"></div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="card-footer">
+        <span class="footer-note">Tariffs in INR · Subject to revision</span>
+        <span class="footer-logo">India Post</span>
+      </div>
+
+    </div><!-- /.card -->
+  </div><!-- /.envelope-wrapper -->
+
+  <!-- PDF Loading Overlay -->
+  <div class="pdf-loading" id="pdfLoading">
+    <div class="pdf-loading-box">
+      <span class="pdf-loading-icon">📄</span>
+      <div class="pdf-loading-text">Generating PDF…</div>
+    </div>
+  </div>
+
+  <!-- Hidden PDF render target -->
+  <div class="pdf-receipt-template" id="pdfTemplate"></div>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>
