@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ITPS Tariff Calculator</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --ink-light: #3d3d5c;
+    --paper: #f5f0e8;
+    --paper-dark: #e8e0cc;
+    --stamp-red: #c0392b;
+    --stamp-blue: #1a4a7a;
+    --gold: #b8860b;
+    --gold-light: #d4a017;
+    --green: #1a6b3c;
+    --rule: rgba(26,26,46,0.15);
+  }
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+font-family: 'DM Sans', sans-serif;
+background: #d6cfc0;
+}
+</style>
+</head>
+<body>
+<select id="country"></select>
+<script>
+const tariffData = [
+  { country: "Afghanistan", first50: 285, additional: 50, maxWeight: "2 kg" },
+  { country: "Australia", first50: 395, additional: 45, maxWeight: "2 kg" },
+  { country: "Germany", first50: 245, additional: 25, maxWeight: "2 kg" }
+];
+
+const select = document.getElementById('country');
+tariffData.forEach(d => {
+  const opt = document.createElement('option');
+  opt.value = d.country;
+  opt.textContent = d.country;
+  select.appendChild(opt);
+});
+</script>
+</body>
+</html>
